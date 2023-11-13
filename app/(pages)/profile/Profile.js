@@ -1,11 +1,11 @@
 'use client'
 
-import React, {useRef, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import styles from './profile.module.scss';
 import { useUserContext } from '@/context/userContext'; 
-import Link from 'next/link';
 
 export default function UserProfile() {
 	const {user, signUserOut} = useUserContext();
@@ -25,7 +25,7 @@ export default function UserProfile() {
 						<input name="photoURL"
 							placeholder="Photo"
 							type="file"
-							onChange={(e) => handleUploadChange(e)}
+							// onChange={(e) => handleUploadChange(e)}
 							autoComplete="off"
 							title="" />
 						{ user?.photoURL ?

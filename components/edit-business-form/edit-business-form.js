@@ -1,18 +1,50 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from 'react-hook-form';
-import styles from './edit-business-form.module.scss';
 import Autocomplete from "react-google-autocomplete";
 import Image from "next/image";
-import getImageDimensions from "@/utils/getImageDimensions";
-import { storage } from "@/app/firebase";
-import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Resizer from 'react-image-file-resizer';
-import uploadIcon from '../../public/assets/uploadIcon.svg'
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from 'uuid';
-import { useUserContext } from '@/context/userContext'; 
 import { useRouter } from 'next/navigation';
-import firebaseService from "@/services/firebase-service";
+import styles from './edit-business-form.module.scss';
+import uploadIcon from '../../public/assets/uploadIcon.svg'
+import { useUserContext } from '@/context/userContext'; 
+import { storage } from "@/app/firebase";
+import FirebaseService from "@/services/firebase-service";
 import capitalizeFirstLetter from "@/utils/capitalizeFirstLetter";
+import getImageDimensions from "@/utils/getImageDimensions";
+
+
+const DAYS_OF_WEEK = [
+	{
+		day: 'monday',
+		abbrev: 'Mon',
+	},
+	{
+		day: 'tuesday',
+		abbrev: 'Tue',
+	},
+	{
+		day: 'wednesday',
+		abbrev: 'Wed',
+	},
+	{
+		day: 'thursday',
+		abbrev: 'Thu',
+	},
+	{
+		day: 'friday',
+		abbrev: 'Fri',
+	},
+	{
+		day: 'saturday',
+		abbrev: 'Sat',
+	},
+	{
+		day: 'sunday',
+		abbrev: 'Sun',
+	},
+];
 
 function EditBusinessForm({ onSubmitForm }) {
 	const {user, signUserOut} = useUserContext();
@@ -49,18 +81,19 @@ function EditBusinessForm({ onSubmitForm }) {
 	const router = useRouter();
 	const [daysOpen, setDaysOpen] = useState([])
 
+	const getSocialMediaLink = (links, platform) => links.find(link => link.type === platform)?.url
+
+
 	useEffect(() => {
-		const firebaseAPI = new firebaseService()
+		const firebaseAPI = new FirebaseService()
 		const getBusiness = async (id) => {
 			const response = await firebaseAPI.getDocument('businesses', id)
-			console.log(response);
 			if (response.result) {
 				const editBusiness = response.result
 				setBusiness(response.result)
 				setValue('businessName', editBusiness.name)
 				setValue('email', editBusiness.email)
 				setPhotos(editBusiness.photos)
-				console.log(editBusiness.address);
 				setLatitude(editBusiness.address.lat)
 				setLongitude(editBusiness.address.lng)
 				setValue('zipCode', editBusiness.address.zipCode);
@@ -91,7 +124,6 @@ function EditBusinessForm({ onSubmitForm }) {
 				setUploadedVideoURL(editBusiness.videoUrl || '')
 				// setValue('threads', getSocialMediaLink(editBusiness.links, 'threads'))
 				setDaysOpen(editBusiness.daysOpen);
-				console.log(response.result);
 			}
 			if (response.error) {
 				setBusiness({})
@@ -102,7 +134,6 @@ function EditBusinessForm({ onSubmitForm }) {
 		}
 
 		if (user?.business) {
-			console.log(user.business.id);
 			getBusiness(user.business.id);
 		}
 
@@ -110,9 +141,6 @@ function EditBusinessForm({ onSubmitForm }) {
 		
 	}, [user, router]);
 
-	const getSocialMediaLink = (links, platform) => {
-		return links.find(link => link.type === platform)?.url
-	}
 
 	const setLocation = (location) => {
 		const {formatted_address} = location;
@@ -140,9 +168,7 @@ function EditBusinessForm({ onSubmitForm }) {
 		setAddressSelected(true)
 	}
 
-	const atLeastOneDaySelected = () => {
-		return getValues("daysOfOperation").length ? true : "Please tell me if this is too hard.";
-	}
+	const atLeastOneDaySelected = () => getValues("daysOfOperation").length ? true : "Please tell me if this is too hard."
 	
 	const disableHours = () => {
 		setDisableOpenCloseHours(value => !value)
@@ -155,7 +181,7 @@ function EditBusinessForm({ onSubmitForm }) {
 		west: -80.337954   // Western longitude coordinate
 	};
 
-	const handle_imageUpload = (photo, fileName, imageDimensions) => {
+	const handleImageUpload = (photo, fileName, imageDimensions) => {
 		const imagesRef = ref(storage, `images/${fileName}`);
 		const uploadTask = uploadBytesResumable(imagesRef, photo);
 
@@ -165,14 +191,16 @@ function EditBusinessForm({ onSubmitForm }) {
 				const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 				setUploadProgress(progress)
 				switch (snapshot.state) {
-				case 'paused':
-					break;
-				case 'running':
-					break;
-				}
+					case 'paused':
+						break;
+					case 'running':
+						break;
+					default:
+					}
 			}, 
 			(error) => {
 				// Handle unsuccessful uploads
+				console.log(error);
 			}, 
 			() => {
 				getDownloadURL(uploadTask.snapshot.ref).then((url) => {
@@ -186,8 +214,8 @@ function EditBusinessForm({ onSubmitForm }) {
 		
 	}
 
-	const handle_videoUpload = async (event) => {
-		let video = event.target.files[0];
+	const handleVideoUpload = async (event) => {
+		const video = event.target.files[0];
 		const fileName = event.target.files[0].name;
 
 		
@@ -226,12 +254,13 @@ function EditBusinessForm({ onSubmitForm }) {
 				setVideoUploadProgress(progress.toFixed(0))
 				
 				switch (snapshot.state) {
-				case 'paused':
-					
-					break;
-				case 'running':
-					
-					break;
+					case 'paused':
+						
+						break;
+					case 'running':
+						
+						break;
+					default:
 				}
 			}, 
 			(error) => {
@@ -252,7 +281,7 @@ function EditBusinessForm({ onSubmitForm }) {
 	}
 
 
-	const handle_ImageUploadChange = async (event) => {
+	const handleImageUploadChange = async (event) => {
 		event.preventDefault()
 		if(photos.length === 8) return;
 
@@ -270,26 +299,45 @@ function EditBusinessForm({ onSubmitForm }) {
 					100,
 					0,
 					async (uri) => {
-						handle_imageUpload(uri, fileName, imageDimensions)
+						handleImageUpload(uri, fileName, imageDimensions)
 					},
 					'blob',
 					200,
 					200,
 				);
 			} catch(err) {
-				
+				console.log(err);
 			}
 		}
 	}
 
-	const handle_PhotoDelete = (id) => {
-		let items = photos.filter((item)=> {
-			
-			return item.id !== id;
-		})
+	const handlePhotoDelete = (id) => {
+		const items = photos.filter((item)=> item.id !== id)
 		
 		setPhotos([...items])
 	}
+	const businessTypes = [
+		'Restaurants',
+		'Beauty',
+		'Church',
+		'Education',
+		'Event Planning',
+		'Financial',
+		'Fitness',
+		'Graphic Design',
+		'Web Services',
+		'Videography',
+		'Photography',
+		'Clothing',
+		'Printing Services',
+		'Car Wash',
+		'Real Estate',
+		'Coaching',
+		'Tattoo Artist',
+		'Art',
+		'Barbershop',
+		'Mobile Repair',
+	].sort();
 
 	return (
 		<form className={styles.businessForm} onSubmit={handleSubmit((data) => {
@@ -318,7 +366,7 @@ function EditBusinessForm({ onSubmitForm }) {
 
 			<label className={styles.labelContainer}>
 				<span className={styles.labelTitle}>Business Email</span>
-				<input 
+				<input
 					{...register('email', { required: true })}
 					placeholder="support@hometeam.com"
 				/>
@@ -388,7 +436,7 @@ function EditBusinessForm({ onSubmitForm }) {
 				</label>
 				<p className={styles.helperText}>*Must select address unlock fields</p>
 			</div>
-			<div className={styles.validationContainer}></div>
+			<div className={styles.validationContainer} />
 
 			<label className={styles.labelContainer}>
 				<span className={styles.labelTitle}>Phone Number</span>
@@ -437,7 +485,7 @@ function EditBusinessForm({ onSubmitForm }) {
 					<input onClick={disableHours} type="checkbox" {...register("alwaysOpen")} name="alwaysOpen"/>	
 				</div>
 			</label>
-			<div className={styles.validationContainer}></div>
+			<div className={styles.validationContainer} />
 			
 			<div>
 				<span className={styles.labelTitle}>Hours of Operation</span>
@@ -445,8 +493,7 @@ function EditBusinessForm({ onSubmitForm }) {
 					<div className={styles.labelContainer}>
 						<div className={styles.daysOfWeekContainer}>
 							{
-								DAYS_OF_WEEK.map(dayOfWeek => {
-									return (
+								DAYS_OF_WEEK.map(dayOfWeek => (
 										<label className={styles.dayContainer} key={dayOfWeek.abbrev} htmlFor={dayOfWeek.day}>
 											<input className={styles.checkbox} 
 												id={dayOfWeek.day} 
@@ -455,11 +502,10 @@ function EditBusinessForm({ onSubmitForm }) {
 												{...register("daysOfOperation", {validate: atLeastOneDaySelected})} 
 												value={dayOfWeek.abbrev}
 											/>	
-											<span className={styles.checkmark}></span>
+											<span className={styles.checkmark} />
 											{dayOfWeek.abbrev}
 										</label>
-									) 
-								})
+									))
 							}
 						</div>
 					</div>
@@ -489,26 +535,21 @@ function EditBusinessForm({ onSubmitForm }) {
 			<label className={styles.industryContainer}>
 				<span className={styles.labelTitle}>Industry</span>
 				<div className={styles.categoriesContainer}>
-					
 					{
-							businessTypes.map( type => {
-								console.log(category, type);
-								console.log(type == capitalizeFirstLetter(category));
-								return (
-									<label className={styles.categoryContainer} key={type} htmlFor={type}>
-										<input className={styles.checkbox} 
-											id={type} 
-											type="radio" 
-											value={type}
-											checked={type == capitalizeFirstLetter(category)}
-											{...register("category", {required: true})}
-											/>	
-										<span className={styles.checkmark}></span>
-										{type}
-									</label>
-								)
-							})
-						}
+						businessTypes.map( type => (
+								<label className={styles.categoryContainer} key={type} htmlFor={type}>
+									<input className={styles.checkbox} 
+										id={type} 
+										type="radio" 
+										value={type}
+										checked={type === capitalizeFirstLetter(category)}
+										{...register("category", {required: true})}
+										/>	
+									<span className={styles.checkmark} />
+									{type}
+								</label>
+							))
+					}
 				</div>
 			</label>
 			<div className={styles.validationContainer}>
@@ -598,7 +639,7 @@ function EditBusinessForm({ onSubmitForm }) {
 								{...register("images", {
 									required: true
 								})}
-								onChange={handle_ImageUploadChange}
+								onChange={handleImageUploadChange}
 							/>
 							<div className={styles.validationContainer}>
 								{errors.images && <p className={styles.validationMessage}>At least one photo is required.</p>}
@@ -610,8 +651,7 @@ function EditBusinessForm({ onSubmitForm }) {
 						<p>My Photos</p>
 						<div className={styles.uploaderContainer}>
 							{photos?.length === 0 && <p className={styles.photoHelperText}>Looks like you need to add some photos</p>}
-							{photos && photos?.map((photo) => {
-								return (
+							{photos && photos?.map((photo) => (
 									<div key={photo.id} className={styles.photoContainer}>
 										<Image
 											src={photo.url}
@@ -621,7 +661,7 @@ function EditBusinessForm({ onSubmitForm }) {
 										/>
 										<button
 											className={styles.deleteButton}
-											onClick={() => handle_PhotoDelete(photo.id)}
+											onClick={() => handlePhotoDelete(photo.id)}
 											type="button"
 										>
 											<svg
@@ -641,13 +681,13 @@ function EditBusinessForm({ onSubmitForm }) {
 											</svg>
 										</button>
 									</div>
-								)})
+								))
 							}
 						</div>
 					</div>
 				</div>
 			</div>
-			<div className={styles.validationContainer}></div>
+			<div className={styles.validationContainer} />
 
 			<span className={styles.labelTitle}>Upload a Video</span>
 			<div className={styles.videoUploaderContainer}>
@@ -662,7 +702,7 @@ function EditBusinessForm({ onSubmitForm }) {
 						className={styles.photoupload}
 						name="videoUploader"
 						type="file" 
-						onChange={handle_videoUpload}
+						onChange={handleVideoUpload}
 					/>
 				</label>
 			</div>
@@ -682,57 +722,3 @@ function EditBusinessForm({ onSubmitForm }) {
 }
 
 export default EditBusinessForm;
-
-const businessTypes = [
-	'Restaurants',
-	'Beauty',
-	'Church',
-	'Education',
-	'Event Planning',
-	'Financial',
-	'Fitness',
-	'Graphic Design',
-	'Web Services',
-	'Videography',
-	'Photography',
-	'Clothing',
-	'Printing Services',
-	'Car Wash',
-	'Real Estate',
-	'Coaching',
-	'Tattoo Artist',
-	'Art',
-	'Barbershop',
-	'Mobile Repair',
-].sort();
-
-const DAYS_OF_WEEK = [
-	{
-		day: 'monday',
-		abbrev: 'Mon',
-	},
-	{
-		day: 'tuesday',
-		abbrev: 'Tue',
-	},
-	{
-		day: 'wednesday',
-		abbrev: 'Wed',
-	},
-	{
-		day: 'thursday',
-		abbrev: 'Thu',
-	},
-	{
-		day: 'friday',
-		abbrev: 'Fri',
-	},
-	{
-		day: 'saturday',
-		abbrev: 'Sat',
-	},
-	{
-		day: 'sunday',
-		abbrev: 'Sun',
-	},
-];

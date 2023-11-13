@@ -1,16 +1,16 @@
 'use client'
+
+import { GeoPoint } from 'firebase/firestore';
 import styles from './editBusiness.module.scss'
 import EditBusinessForm from '@/components/edit-business-form/edit-business-form';
-import { GeoPoint } from 'firebase/firestore';
 import { useUserContext } from '@/context/userContext'; 
-import firebaseService from '@/services/firebase-service';
+import FirebaseService from '@/services/firebase-service';
 
 export default function EditBusiness() {
 	const {user} = useUserContext();
-	const firebaseAPI = new firebaseService();
+	const firebaseAPI = new FirebaseService();
 
 	const onSubmitForm = async (data) => {
-		console.log(data);
 		const business = {
 			name: data.businessName,
 			badges:[],

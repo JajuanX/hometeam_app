@@ -1,8 +1,8 @@
-import { collection, getDocs, addDoc, getDoc, doc } from "firebase/firestore";
+import { collection, getDocs, addDoc, getDoc, doc, setDoc } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import collectIdsandDocs from "@/utils/collectIdsandDocs";
 
-class firebaseService {
+class FirebaseService {
 	async addData(collectionName, data) {
 		const collectionRef = collection(db, collectionName)
 		let result = null;
@@ -17,12 +17,12 @@ class firebaseService {
 		return { result, error };
 	}
 	
-	async updateData(collection, data) {
+	async updateData(collectionName, data) {
 		let result = null;
 		let error = null;
 	
 		try {
-			result = await setDoc(doc(db, collection), data, {
+			result = await setDoc(doc(db, collectionName), data, {
 				merge: true,
 			});
 		} catch (e) {
@@ -48,8 +48,8 @@ class firebaseService {
 		return { result, error };
 	}
 
-	async getDocument(collection, id) {
-		const docRef = doc(db, collection, id);
+	async getDocument(collectionName, id) {
+		const docRef = doc(db, collectionName, id);
 		let result = null;
 		let error = null;
 	
@@ -59,7 +59,7 @@ class firebaseService {
 			result = document.data();
 		} catch (e) {
 			error = {
-				display: `Could not get data from ${collection} collection at id:${id}`,
+				display: `Could not get data from ${collectionName} collection at id:${id}`,
 				message: e,
 			};
 		}
@@ -69,4 +69,4 @@ class firebaseService {
 
 }
 
-export default firebaseService;
+export default FirebaseService;

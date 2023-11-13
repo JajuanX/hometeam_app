@@ -1,13 +1,14 @@
 'use client'
+
+import { GeoPoint } from 'firebase/firestore';
 import styles from './createBusiness.module.scss'
 import CreateBusinessForm from '@/components/create-business-form/create-business-form';
-import { GeoPoint } from 'firebase/firestore';
 import { useUserContext } from '@/context/userContext'; 
-import firebaseService from '@/services/firebase-service';
+import FirebaseService from '@/services/firebase-service';
 
 export default function BusinessForm() {
 	const {user} = useUserContext();
-	const firebaseAPI = new firebaseService();
+	const firebaseAPI = new FirebaseService();
 
 	const onSubmitForm = async (data) => {
 		console.log(data);
