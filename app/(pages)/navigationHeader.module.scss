@@ -1,0 +1,106 @@
+.header {
+	position: sticky;
+	top: 0;
+	width: 100%;
+	z-index: 100;
+	.nav {
+		display: flex;
+		height: 60px;
+		width: 100%;
+		padding: 10px 16px;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		background-color: white;
+		top: 0;
+		z-index: 100;
+		box-shadow: 0px 0px 2px lightgrey;
+		.logoContainer {
+			position: relative;
+			height: 30px;
+			img {
+				display: block;
+				height: 100%;
+				width: 100%;
+			}
+		}
+	
+		.container {
+			display: flex;
+			flex-direction: row;
+			width: 100%;
+			button {
+				flex-basis: 20px;
+			}
+			span {
+				color: #F05E23;
+				margin: auto;
+				padding-right: 20px;
+			}
+	
+		}
+	
+	}
+	
+	.imageContainer {
+		position: relative;
+		width: 35px;
+		height: 35px;
+		img {
+			display: block;
+			height: 100%;
+			width: 100%;
+		}
+	}
+
+}
+
+.footer {
+	position: fixed;
+	width: 100vw;
+	z-index: 999;
+	bottom: 0;
+
+	.navigation {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		align-items: flex-end;
+		box-shadow: 0px 0px 2px lightgrey;
+		padding: 16px 0;
+		width: 100vw;
+		background-color: white;
+		.linktag {
+			text-decoration: none;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 60px;
+			color: #444;
+			span {
+				font-size: .80rem;
+				text-align: center;
+				margin-top: 3px;
+			}
+		}
+		
+		.linktag:visited {
+			color: black;
+		}
+		.profileImageContainer {
+			position: relative;
+			height: 35px;
+			width: 35px;
+			img {
+				border-radius: 100%;
+				display: block;
+				height: 100%;
+				width: 100%;
+			}
+			a:visited {
+				color: black;
+			}
+		}
+	}
+	
+}

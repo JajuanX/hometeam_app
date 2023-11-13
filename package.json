@@ -9,10 +9,28 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google-cloud/firestore": "^6.7.0",
+    "axios": "^1.4.0",
+    "encoding": "^0.1.13",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.4",
+    "firebase": "^9.22.1",
+    "firebase-functions": "^4.4.1",
+    "geofirestore": "^5.2.0",
+    "google-map-react": "^2.2.1",
     "next": "13.4.4",
+    "q": "^1.5.1",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-cool-onclickoutside": "^1.7.0",
+    "react-dom": "18.2.0",
+    "react-google-autocomplete": "^2.7.3",
+    "react-hook-form": "^7.45.0",
+    "react-hot-toast": "^2.4.1",
+    "react-image-file-resizer": "^0.4.8",
+    "react-multi-carousel": "^2.8.4",
+    "react-responsive-masonry": "^2.1.7",
+    "sass": "^1.62.1",
+    "simple-react-validator": "^1.6.2",
+    "uuid": "^9.0.0"
   }
 }

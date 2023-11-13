@@ -1,0 +1,61 @@
+.pin {
+	width: max-content;
+
+	.iconContainer {
+		width: 30px;
+		height: 30px;
+		border-radius: 50% 50% 50% 0;
+		background: orange;
+		position: absolute;
+		transform: rotate(-45deg);
+		left: 50%;
+		top: 50%;
+		margin: -20px 0 0 -20px;
+
+		.overlay {
+			position: relative;
+			top: 1px;
+			left: -2px;
+			z-index: 10;
+			filter: hue-rotate(100deg) saturate(0) grayscale(20%);
+			transform: rotate(45deg);
+
+		}
+
+	}
+	.seeMoreContainer {
+		position: relative;
+		top: -45px;
+		left: 15px;
+		background-color: white;
+		width: 200px;
+		padding: 6px;
+		border: 1px solid black;
+		color: #444;
+		h1 {
+			font-size: .7rem;
+			white-space: nowrap;
+		}
+
+		.close {
+			position: absolute;
+			right: 5px;
+			text-decoration: underline;
+		}
+
+		a {
+			position: absolute;
+			right: 5px;
+			bottom: 0;
+		}
+
+
+		.open {
+			color: green;
+		}
+
+		.closed {
+			color: red;
+		}
+	}
+}

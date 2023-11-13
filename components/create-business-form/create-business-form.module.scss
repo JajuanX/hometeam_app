@@ -1,0 +1,416 @@
+.businessForm {
+	padding-bottom: 2rem;
+	.labelTitle {
+		font-size: 1.2rem;
+		font-weight: 600;
+		margin-bottom: .5rem;
+		display: block;
+	}
+	.labelContainer {
+		input, textarea {
+			display: block;
+			width: 100%;
+			margin: .3rem 0 0;
+			height: 2rem;
+			padding: .7rem;
+			border-radius: 5px;
+			border: 1px solid #cacaca;
+		}
+
+		textarea {
+			height: 150px;
+		}
+	}
+
+	.labelContainerModifier {
+		display: flex;
+		flex-direction: row;
+		@extend .labelTitle;
+
+		.checkBox {
+			@extend .checkmark;
+		}
+
+		.dayContainer {
+			margin-left: 1rem;
+		}
+	}	
+
+	.addressContainer {
+		background-color: #cacaca;
+		margin: 1rem 0;
+		padding: 1rem;
+
+	}
+
+	.hoursOfOpContainer {
+		background-color: white;
+		border-radius: 15px;
+		margin-bottom: 1rem;
+		border: 1px solid #cacaca;
+
+		.timesContainer { 
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+			align-items: center;
+			width: 100%;
+			margin-bottom: 0;
+
+			.timeContainer {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: space-between;
+				text-align: center;
+				border-right: 1px solid #cacaca;
+				padding: 1rem 0 ;
+				width: 50%;
+				height: 100%;
+				input {
+					display: block;
+					margin-bottom: 0;
+				}
+
+				&:last-child {
+					border: none;
+				}
+			}
+	
+		}
+	
+		.daysOfWeekContainer {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			/* Customize the label (the container) */
+			.dayContainer {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				align-items: center;
+				position: relative;
+				width: 100%;
+				padding: .5rem 0;
+				cursor: pointer;
+				font-size: 1rem;
+				min-height: 52px;
+				border-right: 1px solid #cacaca;
+				border-bottom: 1px solid #cacaca;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+				&:last-child {
+					border-right: none;
+				}
+			}
+			
+			/* Hide the browser's default checkbox */
+			.dayContainer input {
+				position: absolute;
+				opacity: 0;
+				cursor: pointer;
+				height: 0;
+				width: 0;
+			}
+			
+			/* Create a custom checkbox */
+			.checkmark {
+				height: 25px;
+				width: 25px;
+				background-color: #eee;
+				border-radius: 100%;
+			}
+			
+			/* On mouse-over, add a grey background color */
+			.dayContainer:hover input ~ .checkmark {
+				background-color: #ccc;
+			}
+			
+			/* When the checkbox is checked, add a blue background */
+			.dayContainer input:checked ~ .checkmark {
+				background-color: #2196F3;
+				border-radius: 100%;
+			}
+			
+			/* Create the checkmark/indicator (hidden when not checked) */
+			.checkmark:after {
+				content: "";
+				position: absolute;
+				display: none;
+			}
+			
+			/* Show the checkmark when checked */
+			.dayContainer input:checked ~ .checkmark:after {
+				display: block;
+			}
+			
+			/* Style the checkmark/indicator */
+			.dayContainer .checkmark:after {
+				position: relative;
+				left: 8px;
+				top: 4px;
+				width: 5px;
+				height: 10px;
+				border: solid white;
+				border-width: 0 3px 3px 0;
+				-webkit-transform: rotate(45deg);
+				-ms-transform: rotate(45deg);
+				transform: rotate(45deg);
+			}
+		}
+
+	}
+
+	.helperText {
+		font-size: .75rem;
+		color: #444;
+	}
+
+	.industryContainer {
+
+		/* Customize the label (the container) */
+		.categoriesContainer {
+			background-color: white;
+			border-radius: 15px;
+			padding: 1rem 2rem;
+			margin-bottom: 1rem;
+			border: 1px solid #cacaca;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			align-items: center;
+			height: 30rem;
+			
+			.categoryContainer {
+				display: flex;
+				align-items: center;
+				justify-content: flex-start;
+				position: relative;
+				width: 50%;
+				height: 44px;
+				cursor: pointer;
+				font-size: 1rem;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			
+				/* Hide the browser's default radio button */
+				input {
+					position: absolute;
+					opacity: 0;
+					cursor: pointer;
+					height: 0;
+					width: 0;
+				}
+				
+				/* Create a custom radio button */
+				.checkmark {
+					// position: absolute;
+					// top: 0;
+					// left: 0;
+					margin-right: 1rem;
+					height: 25px;
+					width: 25px;
+					background-color: #eee;
+					border-radius: 50%;
+				}
+				
+				/* On mouse-over, add a grey background color */
+				&:hover input ~ .checkmark {
+					background-color: #ccc;
+				}
+				
+				/* When the radio button is checked, add a blue background */
+				input:checked ~ .checkmark {
+					background-color: #2196F3;
+				}
+				
+				/* Create the indicator (the dot/circle - hidden when not checked) */
+				&:after {
+					content: "";
+					position: absolute;
+					display: none;
+				}
+				
+				/* Show the indicator (dot/circle) when checked */
+				input:checked ~ .checkmark:after {
+					display: block;
+				}
+				
+				/* Style the indicator (dot/circle) */
+				.checkmark:after {
+					top: 9px;
+					left: 9px;
+					width: 8px;
+					height: 8px;
+					border-radius: 50%;
+					background: red;
+				}
+			}
+		}
+	}
+	.uploadedPhotoContainer {
+		margin-right: 10px;
+		border: 2px dashed #f05e23;
+		background-color: #ffe1d5;
+		width: 100%;
+		box-shadow: 0px 0px 5px lightgrey;
+		color: #444;
+		border-radius: 15px;
+		padding: 2rem;
+		margin-bottom: 1rem;
+		cursor: pointer;
+
+		.photoUploader {
+			width: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;	
+			cursor: pointer;
+
+			input {
+				display: none;
+			}
+			span {
+				text-align: center;
+				font-size: .8rem;
+			}
+
+			.helperText {
+				margin-top: .5rem;
+				text-decoration: underline;
+				color: #f05e23;
+				font-size: .9rem;
+			}
+		
+		}
+	}
+
+	.photosContainer {
+		background-color: white;
+		border-radius: 15px;
+		padding: 1rem 1rem 0;
+		margin-bottom: 1rem;
+		border: 1px solid #cacaca;
+		p {
+			margin-bottom: 1rem;
+		}
+
+		.photoHelperText {
+			height: 5rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: .8rem;
+			text-align: center;
+			width: 100%;
+		}
+		.uploaderContainer {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-start;
+			align-items: space-between;
+			min-height: 96px;
+
+			.photoContainer {
+				flex: 0 0 auto;
+				margin-right: 10px;
+				margin-bottom: 1rem;
+				position: relative;
+				
+				img {
+					display: block;
+					height: 5rem;
+					width: auto;
+					border-radius: 8px;
+				}
+
+				.deleteButton {
+					all: unset;
+					position: absolute;
+					top: -15px; /* Adjust the top value to position the button vertically */
+					right: -7px; /* Adjust the right value to position the button horizontally */
+					background-color: white;
+					border: 1px solid black;
+					border-radius: 500px;
+					width: 25px;
+					height: 25px;
+					padding: 1px;
+					cursor: pointer;
+					color: #f05e23; /* Customize the color of the delete icon */
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+			}
+		}
+	}
+
+	.validationContainer {
+		height: fit-content;
+		min-height: 1.2rem;
+		margin-top: .25rem;
+		margin-bottom: 1rem;
+		.validationMessage {
+			color: red;
+		}
+	}
+
+	.submit {
+		width: 100%;
+		height: 44px;
+		background-color: #f05e23;
+		border: none;
+		color: white;
+		font-size: 1.25rem;
+	}
+
+	.videoUploaderContainer {
+		border: 2px dashed #f05e23;
+		background-color: #ffe1d5;
+		width: 100%;
+		box-shadow: 0px 0px 5px lightgrey;
+		color: #444;
+		border-radius: 15px;
+		padding: 2rem;
+		margin-bottom: 1rem;
+		cursor: pointer;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		.uploader {
+			width: 50%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;	
+			cursor: pointer;
+	
+			input {
+				display: none;
+			}
+			span {
+				text-align: center;
+				font-size: .8rem;
+			}
+	
+			.helperText {
+				margin-top: .5rem;
+				text-decoration: underline;
+				color: #f05e23;
+				font-size: .9rem;
+			}
+		
+		}
+	}
+
+	.placeholderText {
+		height: 1rem;
+	}
+
+
+}

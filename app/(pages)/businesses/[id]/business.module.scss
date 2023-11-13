@@ -1,0 +1,138 @@
+.business {
+	z-index: 0;
+	background-color: lightgray;
+	.imageContainer {
+		position: sticky;
+		top: 60px;		
+		width: 100%;
+		z-index: 0;
+
+		img {
+			z-index: 10;
+			display: block;
+			height: 100%;
+			width: 100%;
+			filter: brightness(.93);
+
+		}
+	}
+	.businessDetails {
+		position: relative;
+		top: 0;
+		z-index: 12;
+		border-radius: 15px 15px 0 0;
+		padding: 1rem 2rem 150px;
+		background-color: white;
+
+
+		&Category{
+			color: #5f5f5f;
+			font-size: .85rem;
+			margin-bottom: .5rem;
+		}
+
+		&Name {
+			font-size: 1.75rem;
+			margin-bottom: .5rem;
+		}
+		&Description {
+			color: rgb(135, 135, 135);
+			line-height: 1.5rem;
+			display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            overflow: hidden;
+            text-overflow: ellipsis;
+		}
+
+		.hashLink {
+			all: unset;
+			cursor: pointer;
+		}
+
+		.hashLinkActive {
+			-webkit-line-clamp: unset;
+			line-clamp: unset;
+		}
+
+		h2 {
+			color: #5f5f5f;
+			font-size: 1rem;
+			margin-bottom: .5rem;
+			margin-top: 1.5rem;
+
+		}
+
+		&SocialMediaContainer {
+			display: flex;
+			width: 50%;
+			justify-content: space-between;
+			margin-bottom: 1.5rem;
+
+			.socialMediaLink {
+				position: relative;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				z-index: 2;
+				background-color: lightgrey;
+				border-radius: 10px;
+				height: 50px;
+				width: 50px;
+			}
+
+		}
+		&ImageGalleryContainer {
+			display: flex;
+			overflow-x: scroll;
+            overflow-y: visible;
+			white-space: nowrap;
+			.imageContainer {	
+				width: 70vw;		
+				img {
+					display: inline-block;
+					height: 200px;
+					width: 70vw;
+					object-fit: cover;
+					filter: brightness(.93);
+		
+				}
+			}
+		}
+		form {
+			margin-top: 20px;
+			input, textarea {
+				display: block;
+				padding: 12px 20px;
+				border: 1px solid #ccc;
+				border-radius: 4px;
+				margin-bottom: 1.5rem;
+				width: 100%;
+
+				&:focus {
+					outline: none;
+					border-color: #555;
+				}
+			}
+
+			button {
+				background-color: #f05e23;
+				border-radius: 5px;
+				padding: .5rem 2rem;
+				color: white;
+				font-size: 1rem;
+				border: none;
+				margin-right: auto;
+			}
+		}
+
+		.messageSentContainer {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 3rem;
+			background-color: #4caf50;
+			color: white;
+		}
+	}
+}
